@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Twitter Share Link</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            text-align: center;
+        }
+        textarea, input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #1DA1F2;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0d8ddb;
+        }
+        #preview {
+            margin-top: 20px;
+            word-wrap: break-word;
+        }
+        #generatedLink {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Generate Twitter/X Share Link</h2>
+    <p>Enter your tweet content and generate a shareable link.</p>
+    
+    <textarea id="tweetText" rows="4" placeholder="Enter tweet content (max 280 characters)"></textarea>
+    <input type="text" id="tweetUrl" placeholder="Optional: Add a link (e.g., https://example.com)">
+    <button onclick="generateLink()">Generate Link</button>
+    
+    <div id="preview"></div>
+    <input type="text" id="generatedLink" readonly>
+    <button onclick="copyLink()">Copy Link</button>
+
+    <script>
+        function generateLink() {
+            const text = document.getElementById('tweetText').value;
+            const url = document.getElementById('tweetUrl').value;
+            
+            if (!text) {
+                alert('Please enter tweet content!');
+                return;
+            }
+
+            const encodedText = encodeURIComponent(text);
+            let tweetLink = `https://twitter.com/intent/tweet?text=${encodedText}`;
+            
+            if (url) {
+                const encodedUrl = encodeURIComponent(url);
+                tweetLink += `&url=${encodedUrl}`;
+            }
+
+            document.getElementById('preview').innerHTML = `Generated Link: <a href="${tweetLink}" target="_blank">${tweetLink}</a>`;
+            document.getElementById('generatedLink').value = tweetLink;
+        }
+
+        function copyLink() {
+            const link = document.getElementById('generatedLink');
+            link.select();
+            document.execCommand('copy');
+            alert('Link copied to clipboard!');
+        }
+    </script>
+</body>
+</html>
